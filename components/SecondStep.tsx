@@ -108,9 +108,7 @@ export default function FirstStep() {
           Dark
         </label>
       </div>
-
       <FormError error={errors.roast} label="Roast" />
-
       <button className="bg-yellow-800 rounded text-white p-3 w-full mt-5">
         Next
       </button>

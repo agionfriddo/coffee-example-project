@@ -10,7 +10,7 @@ const defaultcoffeeClassifiedAtom: CoffeeClassified = {
   roast: "light",
   quality: "ok",
   caffeineContent: 0,
-  isDecaf: false,
+  isOrganic: false,
 };
 
 export const coffeeClassifiedAtom = atom<CoffeeClassified>({

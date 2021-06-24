@@ -10,7 +10,7 @@ export interface CoffeeClassified {
   roast: Roast; // radio
   quality: Quality;
   caffeineContent: number; // slider
-  isDecaf: boolean; // checkbox
+  isOrganic: boolean; // checkbox
 }
 
 // long text, short text, date, image, radio, checkbox, select, slider

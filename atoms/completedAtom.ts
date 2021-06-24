@@ -1,6 +1,6 @@
 import { atom } from "recoil";
 
-export const isCompleted = atom<boolean>({
+export const completedAtom = atom<boolean>({
   key: "completed",
   default: false,
 });

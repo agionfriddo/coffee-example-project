@@ -4,6 +4,7 @@ import Select from "./shared/Select";
 import Input from "./shared/Input";
 import FormError from "./shared/FormError";
 import { viewAtom } from "../atoms/viewAtom";
+import { completedAtom } from "../atoms/completedAtom";
 import { coffeeClassifiedAtom } from "../atoms/coffeeClassifiedAtom";
 import { Quality } from "../models/CoffeeClassified.model";
 import { watch } from "fs";
@@ -11,19 +12,15 @@ import { watch } from "fs";
 interface FormData {
   quality: Quality;
   caffeineContent: string;
-  isDecaf: boolean;
+  isOrganic: boolean;
 }
 
 export default function FirstStep() {
   const [coffeeState, setCoffeeState] = useRecoilState(coffeeClassifiedAtom);
   const setStep = useSetRecoilState(viewAtom);
+  const setIsCompleted = useSetRecoilState(completedAtom);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    watch,
-  } = useForm<FormData>();
+  const { register, handleSubmit, watch } = useForm<FormData>();
 
   function goBack() {
     setStep("secondPage");
@@ -35,7 +32,7 @@ export default function FirstStep() {
       ...data,
       caffeineContent: parseFloat(data.caffeineContent),
     });
-    setStep("thirdPage");
+    setIsCompleted(true);
   });
 
   return (
@@ -54,26 +51,24 @@ export default function FirstStep() {
         <option value="great">Great</option>
         <option value="best">Best</option>
       </Select>
-
       <Input
         label="How much caffeine is there in one cup of this roast?"
         type="range"
-        min={1}
+        min={0}
         max={500}
         defaultValue={coffeeState.caffeineContent}
         {...register("caffeineContent")}
       />
       <p>{watch("caffeineContent")} mg</p>
-
       <div className="mt-5">
         <input
-          id="isDecaf"
+          id="isOrganic"
           type="checkbox"
-          defaultChecked={coffeeState.isDecaf}
+          defaultChecked={coffeeState.isOrganic}
           className="mr-2"
-          {...register("isDecaf")}
+          {...register("isOrganic")}
         />
-        <label htmlFor="isDecaf">Is this roast decaf?</label>
+        <label htmlFor="isOrganic">Is this roast organic?</label>
       </div>
       <button className="bg-yellow-800 rounded text-white p-3 w-full mt-5">
         Next
