@@ -32,7 +32,7 @@ export default function Home() {
           className="p-3 m-3 bg-yellow-800 text-white rounded transition duration-200 ease-in-out transform hover:scale-110"
           onClick={() => setIsModalOpen((isOpen) => !isOpen)}
         >
-          Add Your Coffee!
+          {isCompleted ? "Edit" : "Add"} Your Coffee!
         </button>
         <Modal handleClose={() => setIsModalOpen(false)} isOpen={isModalOpen}>
           {modalPageMap[view]}

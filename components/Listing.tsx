@@ -13,15 +13,14 @@ export default function Listing() {
   return (
     <div className="m-3 p-3 border-yellow-800 border-2 shadow-lg rounded-xl relative">
       <div className="flex">
-        {coffeeState.image && (
-          <Image
-            src={coffeeState.image}
-            alt={`The ${coffeeState.name}`}
-            width="120px"
-            height="120px"
-            className="rounded-full"
-          />
-        )}
+        <Image
+          src={coffeeState.image ?? "/coffee.jpg"}
+          alt={`The ${coffeeState.name}`}
+          width="120px"
+          height="120px"
+          className="rounded-full"
+        />
+
         <div className="ml-10">
           <h1 className="text-3xl font-bold">{coffeeState.name}</h1>
           <ul>

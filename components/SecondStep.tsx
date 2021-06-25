@@ -1,7 +1,7 @@
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { useForm } from "react-hook-form";
+import { isBefore } from "date-fns";
 import Input from "./shared/Input";
-import Select from "./shared/Select";
 import FormError from "./shared/FormError";
 import { viewAtom } from "../atoms/viewAtom";
 import { coffeeClassifiedAtom } from "../atoms/coffeeClassifiedAtom";
@@ -24,9 +24,16 @@ export default function SecondStep() {
   } = useForm<FormData>();
 
   function validateImageSize(data: FileList) {
+    if (!data[0]) return true;
     return (
       data[0].size < 200000 ||
       "Image is too large. Please choose an image less than 200 KB."
+    );
+  }
+
+  function validateDate(date: string) {
+    return (
+      isBefore(new Date(date), new Date()) || "Please select a date in the past"
     );
   }
 
@@ -35,17 +42,25 @@ export default function SecondStep() {
   }
 
   const onSubmit = handleSubmit((data) => {
-    const fileReader = new FileReader();
-    fileReader.readAsDataURL(data.image[0]);
-    fileReader.onload = () => {
+    if (data.image[0]) {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(data.image[0]);
+      fileReader.onload = () => {
+        setCoffeeState({
+          ...coffeeState,
+          roast: data.roast,
+          roastDate: data.roastDate,
+          image: fileReader.result as string,
+        });
+      };
+    } else {
       setCoffeeState({
         ...coffeeState,
-        ...data,
+        roast: data.roast,
         roastDate: data.roastDate,
-        image: fileReader.result as string,
       });
-      setStep("thirdPage");
-    };
+    }
+    setStep("thirdPage");
   });
 
   return (
@@ -59,7 +74,10 @@ export default function SecondStep() {
         label="Roast Date"
         placeholder="When was this coffee roasted?"
         defaultValue={coffeeState.roastDate ? coffeeState.roastDate : ""}
-        {...register("roastDate", { required: true })}
+        {...register("roastDate", {
+          required: true,
+          validate: validateDate,
+        })}
       />
       <FormError error={errors.roastDate} label="Roast Date" />
       <Input
@@ -68,7 +86,7 @@ export default function SecondStep() {
         type="file"
         placeholder="Please upload a picture of your coffee"
         accept="image/png, image/jpeg"
-        {...register("image", { required: true, validate: validateImageSize })}
+        {...register("image", { validate: validateImageSize })}
       />
       {coffeeState.image && (
         <p className="text-sm">Image already set. Click the field to change.</p>
@@ -80,6 +98,7 @@ export default function SecondStep() {
           type="radio"
           id="light"
           value="light"
+          defaultChecked={coffeeState.roast === "light"}
           {...register("roast", { required: true })}
         />
         <label className="ml-2" htmlFor="light">
@@ -91,6 +110,7 @@ export default function SecondStep() {
           type="radio"
           id="medium"
           value="medium"
+          defaultChecked={coffeeState.roast === "medium"}
           {...register("roast", { required: true })}
         />
         <label className="ml-2" htmlFor="medium">
@@ -102,6 +122,7 @@ export default function SecondStep() {
           type="radio"
           id="dark"
           value="dark"
+          defaultChecked={coffeeState.roast === "dark"}
           {...register("roast", { required: true })}
         />
         <label className="ml-2" htmlFor="dark">
