@@ -18,7 +18,7 @@ export default forwardRef<HTMLTextAreaElement, Props>(function TextArea(
         {label}
       </label>
       <textarea
-        className="border-b-2 border-gray-300 focus:outline-none focus:border-yellow-800 w-full"
+        className="border-2 p-2 rounded border-gray-300 focus:outline-none focus:border-yellow-800 w-full transition-colors ease-in-out duration-200"
         ref={ref}
         {...restOfProps}
       />

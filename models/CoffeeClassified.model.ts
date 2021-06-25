@@ -5,7 +5,7 @@ export interface CoffeeClassified {
   name: string; // short text
   description: string; // long text
   price: number; // short text
-  roastDate: Date | null; // date
+  roastDate: string | null; // date
   image: string | null; // image
   roast: Roast; // radio
   quality: Quality;

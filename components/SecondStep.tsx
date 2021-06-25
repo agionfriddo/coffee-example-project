@@ -13,7 +13,7 @@ interface FormData {
   roast: Roast;
 }
 
-export default function FirstStep() {
+export default function SecondStep() {
   const [coffeeState, setCoffeeState] = useRecoilState(coffeeClassifiedAtom);
   const setStep = useSetRecoilState(viewAtom);
 
@@ -41,7 +41,7 @@ export default function FirstStep() {
       setCoffeeState({
         ...coffeeState,
         ...data,
-        roastDate: new Date(data.roastDate),
+        roastDate: data.roastDate,
         image: fileReader.result as string,
       });
       setStep("thirdPage");
@@ -58,9 +58,7 @@ export default function FirstStep() {
         type="date"
         label="Roast Date"
         placeholder="When was this coffee roasted?"
-        defaultValue={
-          coffeeState.roastDate ? coffeeState.roastDate.toDateString() : ""
-        }
+        defaultValue={coffeeState.roastDate ? coffeeState.roastDate : ""}
         {...register("roastDate", { required: true })}
       />
       <FormError error={errors.roastDate} label="Roast Date" />
@@ -69,10 +67,12 @@ export default function FirstStep() {
         label="Image"
         type="file"
         placeholder="Please upload a picture of your coffee"
-        defaultValue={coffeeState.image ?? ""}
         accept="image/png, image/jpeg"
         {...register("image", { required: true, validate: validateImageSize })}
       />
+      {coffeeState.image && (
+        <p className="text-sm">Image already set. Click the field to change.</p>
+      )}
       <FormError error={errors.image} label="Image" />
       <p className="mt-5">Please select what type of roast this is:</p>
       <div>

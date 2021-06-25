@@ -8,11 +8,11 @@ export default function Modal({ isOpen, handleClose, children }: Props) {
   if (!isOpen) return null;
   return (
     <div
-      className="fixed top-0 left-0 bg-black bg-opacity-40 h-screen w-screen flex items-center justify-center"
+      className="fixed top-0 left-0 bg-black bg-opacity-40 h-screen w-screen flex items-center justify-center z-50"
       onClick={handleClose}
     >
       <div
-        className="bg-white relative w-6/12 h-auto p-12 rounded"
+        className="bg-white relative w-6/12 h-auto p-12 rounded shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         <button className="absolute top-5 right-5" onClick={handleClose}>

@@ -1,18 +1,18 @@
 import Head from "next/head";
-
 import Modal from "../components/shared/Modal";
 import FirstStep from "../components/FirstStep";
 import SecondStep from "../components/SecondStep";
 import ThirdStep from "../components/ThirdStep";
-import { useRecoilValue } from "recoil";
-import { coffeeClassifiedAtom } from "../atoms/coffeeClassifiedAtom";
-import { useState } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { viewAtom } from "../atoms/viewAtom";
+import { modalAtom } from "../atoms/modalAtom";
+import Listing from "../components/Listing";
+import { completedAtom } from "../atoms/completedAtom";
 
 export default function Home() {
-  const coffeeState = useRecoilValue(coffeeClassifiedAtom);
-  const [isOpen, setIsOpen] = useState(false);
   const view = useRecoilValue(viewAtom);
+  const [isModalOpen, setIsModalOpen] = useRecoilState(modalAtom);
+  const isCompleted = useRecoilValue(completedAtom);
 
   const modalPageMap = {
     firstPage: <FirstStep />,
@@ -29,16 +29,15 @@ export default function Home() {
       </Head>
       <main>
         <button
-          className="p-3 m-3 bg-yellow-800 text-white rounded"
-          onClick={() => setIsOpen((isOpen) => !isOpen)}
+          className="p-3 m-3 bg-yellow-800 text-white rounded transition duration-200 ease-in-out transform hover:scale-110"
+          onClick={() => setIsModalOpen((isOpen) => !isOpen)}
         >
           Add Your Coffee!
         </button>
-        <Modal handleClose={() => setIsOpen(false)} isOpen={isOpen}>
+        <Modal handleClose={() => setIsModalOpen(false)} isOpen={isModalOpen}>
           {modalPageMap[view]}
         </Modal>
-
-        <pre>{JSON.stringify(coffeeState, null, 2)}</pre>
+        {isCompleted && <Listing />}
       </main>
     </div>
   );

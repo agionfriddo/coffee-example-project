@@ -2,12 +2,11 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import { useForm } from "react-hook-form";
 import Select from "./shared/Select";
 import Input from "./shared/Input";
-import FormError from "./shared/FormError";
 import { viewAtom } from "../atoms/viewAtom";
 import { completedAtom } from "../atoms/completedAtom";
 import { coffeeClassifiedAtom } from "../atoms/coffeeClassifiedAtom";
 import { Quality } from "../models/CoffeeClassified.model";
-import { watch } from "fs";
+import { modalAtom } from "../atoms/modalAtom";
 
 interface FormData {
   quality: Quality;
@@ -15,10 +14,11 @@ interface FormData {
   isOrganic: boolean;
 }
 
-export default function FirstStep() {
+export default function ThirdStep() {
   const [coffeeState, setCoffeeState] = useRecoilState(coffeeClassifiedAtom);
   const setStep = useSetRecoilState(viewAtom);
   const setIsCompleted = useSetRecoilState(completedAtom);
+  const setIsModalOpenState = useSetRecoilState(modalAtom);
 
   const { register, handleSubmit, watch } = useForm<FormData>();
 
@@ -32,7 +32,9 @@ export default function FirstStep() {
       ...data,
       caffeineContent: parseFloat(data.caffeineContent),
     });
+    setStep("firstPage");
     setIsCompleted(true);
+    setIsModalOpenState(false);
   });
 
   return (
