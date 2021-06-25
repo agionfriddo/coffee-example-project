@@ -73,7 +73,7 @@ export default function ThirdStep() {
         <label htmlFor="isOrganic">Is this roast organic?</label>
       </div>
       <button className="bg-yellow-800 rounded text-white p-3 w-full mt-5">
-        Next
+        Finish Up
       </button>
       <button
         className="bg-white rounded text-yellow-800 p-3 w-full mt-5"
